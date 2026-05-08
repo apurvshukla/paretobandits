@@ -1,0 +1,132 @@
+# paretobandits
+
+A Python library for **multi-objective contextual bandits under distribution shift**: vector-valued rewards, polyhedral preference cones, configurable covariate shifts, and Pareto-set evaluation metrics.
+
+This is the reference implementation for Shukla & Kumar (2024), *"Vector preference-based contextual bandits under distributional shifts"*, plus a benchmark suite designed so other algorithms can be plugged in and compared on the same tracks with the same metrics.
+
+## Status
+
+`v0.3.0` — alpha. The core algorithm, **five baselines** (including faithful ports of Suk-Kpotufe 2020, Türgay 2018, and Auer 2016), the synthetic and warfarin tracks, and the metric suite work end-to-end. **PCBShift now supports arbitrary `context_dim`** with standard dyadic branching for d > 1; 1D backward-compatibility is preserved via the `doubling` branching scheme that matches the original code's behavior. Fairness and RLHF tracks plus the NeurIPS Datasets-and-Benchmarks paper are on the roadmap.
+
+## Install
+
+```bash
+pip install -e .                 # core
+pip install -e .[warfarin]       # + IWPC dose data loader
+pip install -e .[viz,dev]        # + plotting + tests
+```
+
+## Quickstart
+
+```python
+from paretobandits import (
+    PCBShift, RandomPlay, ScalarizedUCB,
+    PositiveOrthant, SyntheticShift,
+    PreferenceRegret, Run,
+)
+
+# Environment: synthetic 2-objective with one distribution shift at t=700.
+env = SyntheticShift(n_arms=8, schedule="single", shift_times=[700])
+cone = PositiveOrthant(M=2)
+
+# The hero algorithm.
+algo = PCBShift(
+    n_arms=env.n_arms, context_dim=env.context_dim,
+    n_objectives=env.n_objectives, preference=cone,
+    delta=0.05, horizon=1500, beta=1.0, lipschitz_L=4.0,
+)
+
+# Run + measure preference regret (the paper's d_p).
+result = Run(env, algo, horizon=1500, n_seeds=10).execute()
+metric = PreferenceRegret(cone)
+summary = metric.summarize(metric.compute(result, env))
+print(f"Cumulative d_p regret: {summary.cumulative_mean:.2f} ± {summary.cumulative_std:.2f}")
+```
+
+For a full comparison run including baselines and a metric table, see `examples/quickstart.py`.
+
+## What's included
+
+**Algorithms** (`paretobandits.algos`):
+- `PCBShift` — preference-based contextual bandits with adaptive discretization (Algorithm 1 from the paper). Self-tunes to unknown change point, margin parameter, dissimilarity, and dimension.
+- `SukKpotufe20` — multi-objective adaptation of Suk & Kpotufe (2020), self-tuning over unknown covariate shifts. The closest direct competitor.
+- `Turgay18` — Pareto contextual zooming (Türgay, Öner, Tekin 2018). Stationary multi-objective contextual bandit.
+- `Auer16` — Pareto front identification (Auer et al. 2016). Context-free baseline.
+- `RandomPlay` — uniform random arm. Regret floor.
+- `ScalarizedUCB` — UCB1 on weighted-sum scalarized rewards. The "weighted-sum baseline" the paper argues against.
+
+**Environments** (`paretobandits.envs`):
+- `SyntheticShift` — Hölder-β reward with configurable shift schedule (`none`, `single`, `multi`, `gradual`, `tree`).
+- `Warfarin` — semi-synthetic dose-finding from real IWPC clinical data (5 dose arms, 2 objectives: efficacy + safety).
+
+**Preferences** (`paretobandits.core.preference`):
+- `PositiveOrthant` — the default componentwise dominance order.
+- `PolyhedralCone` — arbitrary `Ax <= 0` cone.
+- `HalfspaceCone` — weighted-sum cone in 2D.
+
+**Metrics** (`paretobandits.eval`):
+- `PreferenceRegret` — the paper's `d_p` regret (primary metric).
+- `HausdorffRegret` — classical Hausdorff over Pareto sets in objective space.
+- `DominanceCoverage` — `|P_estimated ∩ P_true| / |P_true|` (recall).
+- `ParetoPrecisionRecall` — F1 of the estimated Pareto set.
+- `RecoveryTime` — steps after each shift to return to within `ε` of oracle.
+
+**Runner** (`paretobandits.eval.Run`):
+- Multi-seed driver that produces a `RunResult` with full per-step bookkeeping.
+
+## Repository layout
+
+```
+paretobandits/
+├── pyproject.toml
+├── README.md
+├── paretobandits/
+│   ├── core/         # Algorithm, Environment, Preference base classes
+│   ├── algos/        # PCBShift + baselines
+│   ├── envs/         # SyntheticShift, Warfarin
+│   ├── eval/         # metrics + Run/RunResult
+│   └── utils/        # Pareto helpers, dyadic tree
+├── examples/
+│   └── quickstart.py
+├── tests/
+│   └── test_smoke.py
+└── docs/
+    └── theory_to_code.md     # paper-symbol → code-identifier map
+```
+
+## Citing
+
+If you use this library in published work, please cite both the paper and (once it ships) the benchmark paper:
+
+```bibtex
+@article{shukla2024vector,
+  title   = {Vector preference-based contextual bandits under distributional shifts},
+  author  = {Shukla, Apurv and Kumar, P. R.},
+  year    = {2024},
+}
+
+@software{paretobandits,
+  title   = {paretobandits: multi-objective contextual bandits under distribution shift},
+  author  = {Shukla, Apurv and Kumar, P. R.},
+  year    = {2026},
+  url     = {https://github.com/apurvshukla/paretobandits},
+}
+```
+
+## Roadmap
+
+`v0.2` — **shipped**: Suk-Kpotufe 2020, Türgay 2018, and Auer 2016 ports inside `paretobandits.algos.legacy.*`. Reproducibility track now usable.
+
+`v0.3` — **shipped**: Higher-d contexts. `PCBShift` and `SyntheticShift` accept arbitrary `context_dim`. Tree splits become 2^d children for d > 1 (standard dyadic). 1D backward-compatibility preserved via the legacy `doubling` branching default.
+
+`v0.4`: NeurIPS Datasets-and-Benchmarks paper draft. The library + v0.2 baselines + warfarin + synthetic-suite results are enough material; deadline ~mid-June.
+
+`v0.5`: Fairness track (Adult / COMPAS / German Credit reframed as multi-objective bandits).
+
+`v0.6`: RLHF track (cached HH-RLHF rewards as vector targets, prompt-distribution shift).
+
+`v1.0`: Frozen leaderboard, version-tagged baselines, public release.
+
+## License
+
+MIT.
