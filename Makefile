@@ -38,21 +38,32 @@ clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
-# Tag a release. Bumps __version__ and creates a git tag.
+# Tag a release. Bumps __version__ if needed and creates a git tag.
+# Idempotent: safe to re-run; skips no-op steps cleanly.
 # Usage: make release VERSION=0.4.0
 release:
 	@if [ -z "$(VERSION)" ]; then \
 		echo "ERROR: VERSION is required. Usage: make release VERSION=0.4.0"; \
 		exit 1; \
 	fi
-	@echo "Bumping to v$(VERSION) ..."
+	@echo "Releasing v$(VERSION) ..."
 	@sed -i.bak 's/^__version__ = .*/__version__ = "$(VERSION)"/' paretobandits/__init__.py
 	@rm paretobandits/__init__.py.bak
-	@git add paretobandits/__init__.py CHANGELOG.md
-	@git commit -m "Release v$(VERSION)"
-	@git tag -a "v$(VERSION)" -m "Release v$(VERSION)"
+	@if ! git diff --quiet HEAD -- paretobandits/__init__.py 2>/dev/null; then \
+		git add paretobandits/__init__.py CHANGELOG.md 2>/dev/null || true; \
+		git commit -m "Release v$(VERSION)"; \
+		echo "  Bumped __version__ and committed."; \
+	else \
+		echo "  __version__ already at $(VERSION); nothing to commit."; \
+	fi
+	@if git rev-parse "v$(VERSION)" >/dev/null 2>&1; then \
+		echo "  Tag v$(VERSION) already exists; leaving it alone."; \
+	else \
+		git tag -a "v$(VERSION)" -m "Release v$(VERSION)"; \
+		echo "  Created tag v$(VERSION)."; \
+	fi
 	@echo ""
-	@echo "Created tag v$(VERSION). Push with:"
+	@echo "Push with:"
 	@echo "  git push origin main && git push origin v$(VERSION)"
 	@echo ""
 	@echo "The release workflow will then build and upload to PyPI."
