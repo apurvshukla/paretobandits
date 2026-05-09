@@ -7,8 +7,8 @@ description: |
   Canonical single-shift setup. One change point at T/2; pre-shift contexts
   follow Beta(1, nu+1), post-shift Beta(nu+1, 1). Tests adaptation under
   abrupt distribution change.
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:
@@ -20,7 +20,7 @@ environment:
   lipschitz_L: 4.0
   sigma: 0.1
   schedule: single
-  shift_times: [1500]
+  shift_times: [5000]
   nu: 5.0
 
 algorithms:

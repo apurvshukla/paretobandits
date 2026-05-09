@@ -26,7 +26,7 @@
   "n_objectives": 2,
   "algorithms": {
     "PCBShift": {
-      "runtime_s": 1.7434899806976318,
+      "runtime_s": 0.5540525913238525,
       "PreferenceRegret": {
         "cumulative_mean": 718.8252203350452,
         "cumulative_std": 4.594647442101915,
@@ -47,7 +47,7 @@
       }
     },
     "Auer16": {
-      "runtime_s": 0.5068359375,
+      "runtime_s": 0.1544208526611328,
       "PreferenceRegret": {
         "cumulative_mean": 722.2381780543866,
         "cumulative_std": 0.8834512642081286,
@@ -68,7 +68,7 @@
       }
     },
     "ScalarizedUCB": {
-      "runtime_s": 0.6650424003601074,
+      "runtime_s": 0.07173681259155273,
       "PreferenceRegret": {
         "cumulative_mean": 704.9805779217382,
         "cumulative_std": 7.493172019951261,
@@ -89,7 +89,7 @@
       }
     },
     "RandomPlay": {
-      "runtime_s": 0.24552035331726074,
+      "runtime_s": 0.05235409736633301,
       "PreferenceRegret": {
         "cumulative_mean": 732.0710191221871,
         "cumulative_std": 0.2206166186321233,
@@ -106,6 +106,48 @@
         "cumulative_mean": 500.0,
         "cumulative_std": 0.0,
         "final_mean": 1.0,
+        "final_std": 0.0
+      }
+    },
+    "ParetoUCB": {
+      "runtime_s": 0.1863088607788086,
+      "PreferenceRegret": {
+        "cumulative_mean": 709.8086294649123,
+        "cumulative_std": 13.46448672526641,
+        "final_mean": 2.9683939148362946,
+        "final_std": 0.02306202444881652
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 305.16459225538557,
+        "cumulative_std": 6.908483389728276,
+        "final_mean": 0.6985363886106369,
+        "final_std": 0.11182901360487972
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 421.8333333333333,
+        "cumulative_std": 21.47220425469997,
+        "final_mean": 1.0,
+        "final_std": 0.0
+      }
+    },
+    "AnnealingPareto": {
+      "runtime_s": 0.19432497024536133,
+      "PreferenceRegret": {
+        "cumulative_mean": 721.3970405438,
+        "cumulative_std": 0.7375566280268783,
+        "final_mean": 2.9623685478759456,
+        "final_std": 0.017153174932951144
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 304.2072181469017,
+        "cumulative_std": 6.1136935433412845,
+        "final_mean": 0.9577242797729205,
+        "final_std": 0.015536534322592038
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 223.16666666666666,
+        "cumulative_std": 12.268598881637578,
+        "final_mean": 0.0,
         "final_std": 0.0
       }
     }

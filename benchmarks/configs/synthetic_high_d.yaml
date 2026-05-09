@@ -10,8 +10,8 @@ description: |
   d=2 context with single shift. Verifies the v0.3.0 multi-d feature.
   SukKpotufe20 and Turgay18 are omitted because their current
   implementations restrict to context_dim=1.
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:
@@ -23,7 +23,7 @@ environment:
   lipschitz_L: 4.0
   sigma: 0.1
   schedule: single
-  shift_times: [1500]
+  shift_times: [5000]
   nu: 5.0
 
 algorithms:

@@ -9,8 +9,8 @@ description: |
   Tree-discretized source-target family from Theorem 2. Source is Beta(1+β, 1),
   target is Uniform([0, 1]). PCBShift's regret bound has an extra γ/β factor
   here that should produce a wider gap from baselines than the generic case.
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:
@@ -22,7 +22,7 @@ environment:
   lipschitz_L: 4.0
   sigma: 0.1
   schedule: tree
-  shift_times: [1500]
+  shift_times: [5000]
   nu: 5.0
 
 algorithms:

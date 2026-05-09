@@ -21,6 +21,8 @@ from paretobandits.core.preference import (
     PositiveOrthant,
     Preference,
 )
+from paretobandits.envs.fairness import FairnessBandit
+from paretobandits.envs.rlhf import RLHFBandit
 from paretobandits.envs.synthetic import SyntheticShift
 from paretobandits.eval.metrics import (
     DominanceCoverage,
@@ -31,7 +33,7 @@ from paretobandits.eval.metrics import (
 )
 from paretobandits.eval.runner import Run, RunResult
 
-__version__ = "0.4.0"
+__version__ = "0.7.0"
 
 __all__ = [
     "Preference",
@@ -45,6 +47,8 @@ __all__ = [
     "ScalarizedUCB",
     "SukKpotufe20",
     "SyntheticShift",
+    "FairnessBandit",
+    "RLHFBandit",
     "PreferenceRegret",
     "HausdorffRegret",
     "DominanceCoverage",

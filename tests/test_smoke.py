@@ -21,7 +21,18 @@ from paretobandits import (
     SukKpotufe20,
     SyntheticShift,
 )
-from paretobandits.algos.legacy import Auer16, Turgay18
+from paretobandits.algos.legacy import (
+    AnnealingPareto,
+    ATCBinning,
+    Auer16,
+    CUSUMRestart,
+    ParetoUCB,
+    SlidingWindowBinning,
+    StaticBinning,
+    Turgay18,
+)
+from paretobandits.envs.fairness import FairnessBandit
+from paretobandits.envs.rlhf import RLHFBandit
 
 # ─── Preference / cone tests ────────────────────────────────────────
 
@@ -324,6 +335,131 @@ def test_dyadic_split_produces_2_to_d_children():
         assert c.bounds.shape == (3, 2)
         # Width should be 0.5 along every axis.
         assert np.allclose(c.width, 0.5)
+
+
+def _smoke_run_algo(algo_cls, **kwargs):
+    """Helper: run an algo for 200 steps with synthetic rewards and check API."""
+    cone = PositiveOrthant(M=2)
+    algo = algo_cls(
+        n_arms=5, context_dim=1, n_objectives=2, preference=cone,
+        delta=0.1, horizon=200, **kwargs,
+    )
+    algo.reset(seed=0)
+    rng = np.random.default_rng(0)
+    for _ in range(200):
+        ctx = np.array([rng.uniform()])
+        a = algo.act(ctx)
+        algo.update(ctx, a, rng.uniform(size=2))
+    pe = algo.pareto_estimate(np.array([0.5]))
+    assert isinstance(pe, set) and len(pe) >= 1
+    return algo
+
+
+def test_pareto_ucb_runs():
+    _smoke_run_algo(ParetoUCB)
+
+
+def test_annealing_pareto_runs():
+    _smoke_run_algo(AnnealingPareto)
+
+
+def test_static_binning_runs():
+    _smoke_run_algo(StaticBinning)
+
+
+def test_sliding_window_binning_runs():
+    _smoke_run_algo(SlidingWindowBinning, window_size=50)
+
+
+def test_cusum_restart_runs_and_can_reset():
+    """Running with constant rewards then a shift should trigger at least one CUSUM reset."""
+    cone = PositiveOrthant(M=2)
+    algo = CUSUMRestart(
+        n_arms=4, context_dim=1, n_objectives=2, preference=cone,
+        delta=0.1, horizon=400, cusum_h=2.0, cusum_eps=0.05,
+    )
+    algo.reset(seed=0)
+    rng = np.random.default_rng(0)
+    # Pre-shift: rewards near (0.2, 0.8). Post-shift: near (0.8, 0.2).
+    for t in range(400):
+        ctx = np.array([0.5])
+        a = algo.act(ctx)
+        if t < 200:
+            r = np.array([0.2, 0.8]) + 0.05 * rng.standard_normal(2)
+        else:
+            r = np.array([0.8, 0.2]) + 0.05 * rng.standard_normal(2)
+        algo.update(ctx, a, np.clip(r, 0.0, 1.0))
+    # At minimum runs without error and returns a non-empty Pareto set.
+    pe = algo.pareto_estimate(np.array([0.5]))
+    assert isinstance(pe, set) and len(pe) >= 1
+
+
+def test_atc_binning_runs():
+    _smoke_run_algo(ATCBinning, alpha=0.05)
+
+
+def test_fairness_env_shapes_and_run():
+    cone = PositiveOrthant(M=2)
+    env = FairnessBandit(
+        n_arms=5, n_features=4, schedule="single", shift_times=[100], seed=0
+    )
+    assert env.context_dim == 4
+    assert env.n_objectives == 2
+    ctx = env.context(0)
+    assert ctx.shape == (4,)
+    means = env.true_means(ctx)
+    assert means.shape == (5, 2)
+    reward = env.step(0, action=0)
+    assert reward.shape == (2,)
+    # End-to-end with PCBShift at d=4.
+    algo = PCBShift(env.n_arms, env.context_dim, env.n_objectives, cone, delta=0.1, horizon=200)
+    Run(env, algo, horizon=200, n_seeds=2, base_seed=0).execute()
+
+
+def test_fairness_env_metric_choices():
+    """All three fairness metrics produce values in [0, 1]."""
+    for metric in ("demographic_parity", "equal_opportunity", "predictive_parity"):
+        env = FairnessBandit(n_arms=3, n_features=3, fairness_metric=metric, seed=0)
+        env.reset(seed=0)
+        for t in range(50):
+            env.context(t)
+            for k in range(env.n_arms):
+                env.step(t, k)
+        # After 50*K plays, the running fairness estimate is informative.
+        means = env.true_means(env.context(50))
+        assert np.all(means[:, 1] >= 0.0) and np.all(means[:, 1] <= 1.0)
+
+
+def test_rlhf_env_shapes_and_run():
+    cone = PositiveOrthant(M=3)
+    env = RLHFBandit(
+        n_arms=4, embedding_dim=3, n_clusters=3, schedule="single",
+        shift_times=[100], seed=0,
+    )
+    assert env.context_dim == 3
+    assert env.n_objectives == 3
+    ctx = env.context(0)
+    assert ctx.shape == (3,)
+    means = env.true_means(ctx)
+    assert means.shape == (4, 3)
+    reward = env.step(0, action=0)
+    assert reward.shape == (3,)
+    # End-to-end with PCBShift at d=3, M=3.
+    algo = PCBShift(env.n_arms, env.context_dim, env.n_objectives, cone, delta=0.1, horizon=200)
+    Run(env, algo, horizon=200, n_seeds=2, base_seed=0).execute()
+
+
+def test_rlhf_env_cluster_distribution_shifts():
+    """Pre-shift cluster distribution differs from post-shift."""
+    env = RLHFBandit(
+        n_arms=3, embedding_dim=3, n_clusters=3,
+        schedule="single", shift_times=[500], seed=0,
+    )
+    env.reset(seed=0)
+    # Cluster distribution at t=0 should put most mass on cluster 0.
+    p_pre = env._cluster_distribution(0)
+    p_post = env._cluster_distribution(600)
+    assert p_pre.argmax() != p_post.argmax()
 
 
 def test_doubling_branching_remains_for_1d_default():

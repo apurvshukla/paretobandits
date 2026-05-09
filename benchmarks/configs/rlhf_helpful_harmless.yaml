@@ -1,0 +1,38 @@
+# RLHF-style three-objective bandit on a stationary prompt distribution.
+# Tests M=3 reward vectors (helpful, harmless, honest) — the canonical
+# HH-RLHF objective decomposition. No distribution shift; this is the
+# "ceiling" config that establishes how each algorithm handles M>2.
+
+name: rlhf_helpful_harmless
+description: |
+  Stationary RLHF-style benchmark with three reward objectives
+  (helpful, harmless, honest). Three prompt clusters with distinct
+  arm-reward profiles per cluster. The test is whether algorithms
+  can find the per-cluster Pareto front when M=3.
+
+  To plug in real HH-RLHF / PKU-SafeRLHF data, set csv_path to a CSV
+  with columns prompt_id, embedding_0..embedding_{d-1}, arm_id,
+  helpful, harmless, honest. See examples/rlhf_dataset_prep.md.
+horizon: 10000
+n_seeds: 20
+delta: 0.05
+
+environment:
+  type: RLHFBandit
+  n_arms: 4
+  embedding_dim: 4
+  n_clusters: 3
+  schedule: none
+  sigma: 0.05
+
+algorithms:
+  - PCBShift
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

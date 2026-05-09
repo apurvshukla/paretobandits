@@ -4,6 +4,40 @@ All notable changes to **paretobandits** will be documented here. Versions follo
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-05-08
+
+### Added
+- **Six additional baselines.** Total now: 11 algorithms (1 hero + 10 baselines).
+  - `ParetoUCB` (Drugan & Nowe 2013) — multi-objective UCB with Pareto-optimal candidate set.
+  - `AnnealingPareto` (Yahyaa et al. 2014) — temperature-annealed softmax over Pareto-membership scores.
+  - `StaticBinning` — fixed M-bin grid baseline; pure UCB with no shift handling.
+  - `SlidingWindowBinning` — fixed grid + per-(bin, arm) sliding window for implicit shift handling.
+  - `CUSUMRestart` — fixed grid + two-sided CUSUM change-point detection with per-bin restart.
+  - `ATCBinning` — fixed grid + Anytime-Tracking-CUSUM (Dey, Garivier, Kaufmann 2025) extended to vector rewards via Bonferroni union over M objectives.
+- All 11 algorithms registered in `benchmarks/run.py:ALGORITHMS` and exposed through `paretobandits.algos.legacy`.
+- 6 new smoke tests covering the new algorithms; total now 33 tests.
+
+### Notes
+- Four algorithms remain on the v0.8+ roadmap and are not yet ported: Slivkins (2011) Contextual Zooming, Kone et al. (2023) Adaptive Pareto Set ID, Yahyaa et al. (2014b) Knowledge-Gradient-MO, and Cai, Cai & Li (2024) Transfer Learning for Contextual MABs. Adding any one is a focused 1–2 week project — the API contract is the same `Algorithm` subclass with `act` / `update` / `pareto_estimate`.
+
+## [0.6.0] — 2026-05-08
+
+### Added
+- **RLHF track.** New `RLHFBandit` environment in `paretobandits.envs.rlhf`. Three-objective rewards (helpful, harmless, honest), prompt embedding as context, K response strategies as arms. Two configs: `rlhf_helpful_harmless` (stationary, M=3 ceiling test) and `rlhf_prompt_shift` (production-style training-vs-deployment distribution shift). Runs synthetic-but-realistic by default; supports cached HH-RLHF / PKU-SafeRLHF rewards via `csv_path=` (CSV schema documented in module docstring).
+- M=3 reward vectors verified end-to-end through PCBShift, all baselines, all metrics, and the runner. The `n_objectives` is now read from the env's class attribute rather than the YAML, so envs with hard-coded M (like RLHFBandit's M=3) are handled correctly.
+
+## [0.5.0] — 2026-05-08
+
+### Added
+- **Fairness track.** New `FairnessBandit` environment in `paretobandits.envs.fairness`. Wraps a tabular fair-classification dataset; per-step rewards are (accuracy_indicator, 1 - |gap|) where the gap is a rolling-window estimate of demographic-parity / equal-opportunity / predictive-parity, configurable via `fairness_metric=`. Three configs: `fairness_adult`, `fairness_compas`, `fairness_german_credit`, each with a different fairness metric and shift schedule. Synthetic-but-realistic generator by default; load real CSVs via `csv_path=`.
+
+### Added (also in this iteration)
+- `--scale full|smoke` flag to the benchmark runner: overrides the YAML's horizon and n_seeds at runtime. `full` = (T=10000, n_seeds=20), `smoke` = (T=500, n_seeds=3).
+- `--force` flag to re-run configs whose result JSON already exists; default behavior now skips them so an interrupted batch can be resumed safely.
+- `make benchmark` (full publication scale, ~40–60 min), `make benchmark-smoke` (~30s for fast iteration), `make benchmark-fresh` (force rerun), `make benchmark-clean` (wipe results).
+- Scale-aware `BENCHMARK.md` generator: leads with explicit caveats and a rerun recipe at sandbox scale; writes confident citable language at publication scale.
+- Bumped all six canonical synthetic YAML configs to T=10000, n_seeds=20 — the publication-grade defaults. Sandbox-scale runs go through `--scale smoke` rather than YAML edits.
+
 ## [0.4.0] — 2026-05-08
 
 ### Added

@@ -1,0 +1,36 @@
+# German Credit-style fair-classification bandit. Predictive parity
+# (PPV equality across groups) is the fairness metric — the natural
+# choice when the question is "of the people predicted high-risk, are
+# the same fraction actually high-risk in each group?"
+
+name: fairness_german_credit
+description: |
+  German Credit-style fair-classification. Predictive-parity gap as
+  fairness signal. With multi-shift schedule the group composition
+  alternates twice during the run, simulating policy or population
+  changes that recur over time.
+horizon: 10000
+n_seeds: 20
+delta: 0.05
+
+environment:
+  type: FairnessBandit
+  n_arms: 10
+  n_features: 10
+  fairness_metric: predictive_parity
+  schedule: multi
+  shift_times: [3000, 6000, 9000]
+  window: 200
+  sigma: 0.05
+
+algorithms:
+  - PCBShift
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

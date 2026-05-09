@@ -70,6 +70,10 @@ Repository = "https://github.com/apurvshukla/paretobandits"
 Issues = "https://github.com/apurvshukla/paretobandits/issues"
 Changelog = "https://github.com/apurvshukla/paretobandits/blob/main/CHANGELOG.md"
 
+# Note: the benchmark suite (`benchmarks/`) is a sibling of the package
+# and not shipped to PyPI — it's a dev tool for the repo. Run it with
+# `python -m benchmarks.run --all` from a git checkout.
+
 [tool.setuptools.packages.find]
 include = ["paretobandits*"]
 exclude = ["tests*", "examples*", "benchmarks*", "docs*"]

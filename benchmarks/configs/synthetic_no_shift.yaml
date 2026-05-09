@@ -8,8 +8,8 @@ description: |
   Stationary baseline. Single context distribution Beta(1, nu+1) for the
   entire run. Tests that shift-aware algorithms don't pay too much cost
   for their machinery when there's no shift to track.
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:

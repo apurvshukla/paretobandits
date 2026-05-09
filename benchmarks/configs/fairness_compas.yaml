@@ -1,0 +1,36 @@
+# COMPAS-style fair-classification bandit. Recidivism risk prediction
+# with race as the protected attribute. Equal-opportunity is the
+# fairness metric (parity of true-positive rates), since FPR/FNR balance
+# is the central concern in the COMPAS literature.
+
+name: fairness_compas
+description: |
+  COMPAS-style recidivism prediction. Equal-opportunity gap as
+  objective 2 — the fairness metric most discussed in the original
+  ProPublica analysis. Pre-shift / post-shift simulates a change in
+  the demographic composition of the booking population.
+horizon: 10000
+n_seeds: 20
+delta: 0.05
+
+environment:
+  type: FairnessBandit
+  n_arms: 10
+  n_features: 8
+  fairness_metric: equal_opportunity
+  schedule: single
+  shift_times: [5000]
+  window: 200
+  sigma: 0.05
+
+algorithms:
+  - PCBShift
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

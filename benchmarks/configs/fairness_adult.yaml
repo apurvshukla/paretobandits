@@ -1,0 +1,42 @@
+# Fair classification on an Adult-style dataset (synthetic generator
+# uses ~6 features mimicking age / education / hours; if you have the
+# real Adult CSV, set csv_path: <path> with feature_*, group, outcome
+# columns).
+#
+# Demographic-parity gap is the fairness metric. Pre-shift the
+# environment over-samples one group; post-shift the other. Optimal
+# threshold differs by group, so an algorithm that doesn't adapt
+# loses on accuracy.
+
+name: fairness_adult
+description: |
+  Adult-style fair-classification bandit. Two demographic groups with
+  different feature distributions and different score thresholds for
+  optimal accuracy. Distribution shift = group-prevalence flip mid-run.
+  Tests whether algorithms can re-find the right threshold post-shift
+  while keeping the demographic-parity gap small.
+horizon: 10000
+n_seeds: 20
+delta: 0.05
+
+environment:
+  type: FairnessBandit
+  n_arms: 10
+  n_features: 6
+  fairness_metric: demographic_parity
+  schedule: single
+  shift_times: [5000]
+  window: 200
+  sigma: 0.05
+
+algorithms:
+  - PCBShift
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

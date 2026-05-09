@@ -10,8 +10,8 @@ description: |
   sharp change point to detect; the algorithm has to track a moving
   target. This is harder than abrupt shift in some ways (no clear signal
   for change-point detectors) and easier in others (no sudden break).
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:
@@ -23,7 +23,7 @@ environment:
   lipschitz_L: 4.0
   sigma: 0.1
   schedule: gradual
-  shift_times: [750, 2250]    # interpolate over [t0, t1]
+  shift_times: [2500, 7500]    # interpolate over [t0, t1]
   nu: 5.0
 
 algorithms:

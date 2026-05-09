@@ -28,7 +28,7 @@
   "n_objectives": 2,
   "algorithms": {
     "PCBShift": {
-      "runtime_s": 1.7196831703186035,
+      "runtime_s": 0.42700982093811035,
       "PreferenceRegret": {
         "cumulative_mean": 977.066777806987,
         "cumulative_std": 26.046598647889653,
@@ -49,7 +49,7 @@
       }
     },
     "SukKpotufe20": {
-      "runtime_s": 0.5445992946624756,
+      "runtime_s": 0.1408672332763672,
       "PreferenceRegret": {
         "cumulative_mean": 1024.5583329408819,
         "cumulative_std": 0.3773165909064125,
@@ -70,7 +70,7 @@
       }
     },
     "Turgay18": {
-      "runtime_s": 1.2746782302856445,
+      "runtime_s": 0.3011202812194824,
       "PreferenceRegret": {
         "cumulative_mean": 1005.9625257976822,
         "cumulative_std": 26.492986329347428,
@@ -91,7 +91,7 @@
       }
     },
     "Auer16": {
-      "runtime_s": 0.6186623573303223,
+      "runtime_s": 0.14413213729858398,
       "PreferenceRegret": {
         "cumulative_mean": 981.9086458125047,
         "cumulative_std": 9.862173401954934,
@@ -112,7 +112,7 @@
       }
     },
     "ScalarizedUCB": {
-      "runtime_s": 0.2275385856628418,
+      "runtime_s": 0.07172203063964844,
       "PreferenceRegret": {
         "cumulative_mean": 946.7985609087478,
         "cumulative_std": 2.8014669071806355,
@@ -133,7 +133,7 @@
       }
     },
     "RandomPlay": {
-      "runtime_s": 0.18041157722473145,
+      "runtime_s": 0.053250789642333984,
       "PreferenceRegret": {
         "cumulative_mean": 1032.6349855801388,
         "cumulative_std": 0.693244835224776,
@@ -151,6 +151,132 @@
         "cumulative_std": 0.0,
         "final_mean": 1.0,
         "final_std": 0.0
+      }
+    },
+    "ParetoUCB": {
+      "runtime_s": 0.21029973030090332,
+      "PreferenceRegret": {
+        "cumulative_mean": 1002.9688891990972,
+        "cumulative_std": 3.817706805134967,
+        "final_mean": 2.9347969453750866,
+        "final_std": 0.002045123411224359
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 347.65504549247976,
+        "cumulative_std": 7.335426362416164,
+        "final_mean": 0.8027235256461029,
+        "final_std": 0.04833975262746863
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 395.3333333333333,
+        "cumulative_std": 12.225504609747713,
+        "final_mean": 0.6666666666666666,
+        "final_std": 0.0
+      }
+    },
+    "AnnealingPareto": {
+      "runtime_s": 0.21259021759033203,
+      "PreferenceRegret": {
+        "cumulative_mean": 970.9250660825464,
+        "cumulative_std": 7.262781283910992,
+        "final_mean": 2.901768332124943,
+        "final_std": 0.02562270890276455
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 339.7017304648211,
+        "cumulative_std": 10.482766695567516,
+        "final_mean": 0.9255977674050406,
+        "final_std": 0.048944910528199694
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 213.55555555555557,
+        "cumulative_std": 35.46420556763128,
+        "final_mean": 0.1111111111111111,
+        "final_std": 0.15713484026367722
+      }
+    },
+    "StaticBinning": {
+      "runtime_s": 0.2169780731201172,
+      "PreferenceRegret": {
+        "cumulative_mean": 854.4882015137922,
+        "cumulative_std": 20.00769700201106,
+        "final_mean": 1.9563221734034792,
+        "final_std": 1.383330115629645
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 290.9359310712711,
+        "cumulative_std": 46.07331735158241,
+        "final_mean": 0.5322899277650699,
+        "final_std": 0.379428821415836
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 360.7222222222222,
+        "cumulative_std": 12.338087171913141,
+        "final_mean": 0.7777777777777777,
+        "final_std": 0.15713484026367724
+      }
+    },
+    "SlidingWindowBinning": {
+      "runtime_s": 0.44528770446777344,
+      "PreferenceRegret": {
+        "cumulative_mean": 959.6308097137958,
+        "cumulative_std": 28.625318992874444,
+        "final_mean": 1.9558208195260176,
+        "final_std": 1.3829748551849836
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 309.42744395652363,
+        "cumulative_std": 21.44000612186892,
+        "final_mean": 0.5561572360502279,
+        "final_std": 0.39370815790828473
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 355.88888888888886,
+        "cumulative_std": 18.380914685927866,
+        "final_mean": 0.7777777777777777,
+        "final_std": 0.15713484026367724
+      }
+    },
+    "CUSUMRestart": {
+      "runtime_s": 0.22043776512145996,
+      "PreferenceRegret": {
+        "cumulative_mean": 896.3993182228623,
+        "cumulative_std": 11.601878411348542,
+        "final_mean": 1.957450897820676,
+        "final_std": 1.3841269398877585
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 312.41926639752995,
+        "cumulative_std": 21.93180533314879,
+        "final_mean": 0.5169998874769081,
+        "final_std": 0.3667409364016184
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 359.27777777777777,
+        "cumulative_std": 5.621277918062659,
+        "final_mean": 0.7777777777777777,
+        "final_std": 0.15713484026367724
+      }
+    },
+    "ATCBinning": {
+      "runtime_s": 0.4540987014770508,
+      "PreferenceRegret": {
+        "cumulative_mean": 854.4882015137922,
+        "cumulative_std": 20.00769700201106,
+        "final_mean": 1.9563221734034792,
+        "final_std": 1.383330115629645
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 290.9359310712711,
+        "cumulative_std": 46.07331735158241,
+        "final_mean": 0.5322899277650699,
+        "final_std": 0.379428821415836
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 360.7222222222222,
+        "cumulative_std": 12.338087171913141,
+        "final_mean": 0.7777777777777777,
+        "final_std": 0.15713484026367724
       }
     }
   }

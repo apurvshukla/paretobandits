@@ -17,19 +17,26 @@ Available:
                     Context-free.
 """
 
+from paretobandits.algos.legacy.annealing_pareto import AnnealingPareto
+from paretobandits.algos.legacy.auer16 import Auer16
+from paretobandits.algos.legacy.pareto_ucb import ParetoUCB
+from paretobandits.algos.legacy.static_binning import (
+    ATCBinning,
+    CUSUMRestart,
+    SlidingWindowBinning,
+    StaticBinning,
+)
 from paretobandits.algos.legacy.suk_kpotufe import SukKpotufe20
+from paretobandits.algos.legacy.turgay18 import Turgay18
 
-__all__ = ["SukKpotufe20"]
-
-# Other baselines added incrementally as they're ported.
-try:
-    from paretobandits.algos.legacy.turgay18 import Turgay18  # noqa: F401
-    __all__.append("Turgay18")
-except ImportError:
-    pass
-
-try:
-    from paretobandits.algos.legacy.auer16 import Auer16  # noqa: F401
-    __all__.append("Auer16")
-except ImportError:
-    pass
+__all__ = [
+    "AnnealingPareto",
+    "ATCBinning",
+    "Auer16",
+    "CUSUMRestart",
+    "ParetoUCB",
+    "SlidingWindowBinning",
+    "StaticBinning",
+    "SukKpotufe20",
+    "Turgay18",
+]

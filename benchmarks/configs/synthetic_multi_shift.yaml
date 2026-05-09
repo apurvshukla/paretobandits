@@ -8,8 +8,8 @@ description: |
   Three change points alternating between two distributions. This is the
   setup for Theorem 3 (multiple shifts). Algorithms that don't adapt
   online should accumulate regret at every shift.
-horizon: 3000
-n_seeds: 8
+horizon: 10000
+n_seeds: 20
 delta: 0.05
 
 environment:
@@ -21,7 +21,7 @@ environment:
   lipschitz_L: 4.0
   sigma: 0.1
   schedule: multi
-  shift_times: [750, 1500, 2250]
+  shift_times: [2500, 5000, 7500]
   nu: 5.0
 
 algorithms:

@@ -1,4 +1,5 @@
-.PHONY: install test lint format check build clean release help
+.PHONY: install test lint format check build clean release help \
+        benchmark benchmark-smoke benchmark-clean benchmark-fresh
 
 PYTHON ?= python
 PIP    ?= pip
@@ -6,6 +7,7 @@ PIP    ?= pip
 help:
 	@echo "paretobandits — common dev tasks"
 	@echo ""
+	@echo "Development:"
 	@echo "  make install       Install package with dev extras (editable)."
 	@echo "  make test          Run pytest with coverage."
 	@echo "  make lint          Run ruff check."
@@ -14,6 +16,12 @@ help:
 	@echo "  make build         Build sdist + wheel into dist/."
 	@echo "  make clean         Remove build artifacts and caches."
 	@echo "  make release VERSION=x.y.z   Tag a release."
+	@echo ""
+	@echo "Benchmark:"
+	@echo "  make benchmark         Full publication-grade run (T=10000, 20 seeds; ~40-60min)."
+	@echo "  make benchmark-smoke   Fast iteration (T=500, 3 seeds; ~30s)."
+	@echo "  make benchmark-fresh   --force: re-run all configs even if results exist."
+	@echo "  make benchmark-clean   Wipe benchmarks/results/ before re-running."
 
 install:
 	$(PIP) install -e ".[dev,warfarin]"
@@ -37,6 +45,18 @@ clean:
 	rm -rf build/ dist/ *.egg-info paretobandits.egg-info
 	rm -rf .pytest_cache .ruff_cache .mypy_cache .coverage htmlcov
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+
+benchmark:
+	$(PYTHON) -m benchmarks.run --all --scale full
+
+benchmark-smoke:
+	$(PYTHON) -m benchmarks.run --all --scale smoke
+
+benchmark-fresh:
+	$(PYTHON) -m benchmarks.run --all --scale full --force
+
+benchmark-clean:
+	rm -rf benchmarks/results/*.json benchmarks/results/*.md
 
 # Tag a release. Bumps __version__ if needed and creates a git tag.
 # Idempotent: safe to re-run; skips no-op steps cleanly.

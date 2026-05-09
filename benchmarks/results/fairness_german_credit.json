@@ -1,0 +1,115 @@
+{
+  "config_name": "fairness_german_credit",
+  "config_path": "benchmarks/configs/fairness_german_credit.yaml",
+  "horizon": 500,
+  "n_seeds": 3,
+  "delta": 0.05,
+  "environment": {
+    "type": "FairnessBandit",
+    "n_arms": 6,
+    "n_features": 10,
+    "fairness_metric": "predictive_parity",
+    "schedule": "multi",
+    "shift_times": [
+      125,
+      250,
+      375
+    ],
+    "window": 200,
+    "sigma": 0.05
+  },
+  "shift_times": [
+    125,
+    250,
+    375
+  ],
+  "n_arms": 6,
+  "context_dim": 10,
+  "n_objectives": 2,
+  "algorithms": {
+    "PCBShift": {
+      "runtime_s": 8.033793687820435,
+      "PreferenceRegret": {
+        "cumulative_mean": 1072.8445896221594,
+        "cumulative_std": 69.32970031514945,
+        "final_mean": 1.9997103254839883,
+        "final_std": 1.4140087315584862
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 229.7223670357379,
+        "cumulative_std": 48.58833473335559,
+        "final_mean": 0.26666666666666666,
+        "final_std": 0.18856180831641267
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 223.83333333333334,
+        "cumulative_std": 42.25780664234979,
+        "final_mean": 0.6666666666666666,
+        "final_std": 0.23570226039551584
+      }
+    },
+    "Auer16": {
+      "runtime_s": 0.5079288482666016,
+      "PreferenceRegret": {
+        "cumulative_mean": 1124.8370580847434,
+        "cumulative_std": 0.0,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 315.7760066918795,
+        "cumulative_std": 76.44746624565195,
+        "final_mean": 0.7307082687410119,
+        "final_std": 0.378117270261506
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 329.5,
+        "cumulative_std": 51.29814811472242,
+        "final_mean": 0.6666666666666666,
+        "final_std": 0.23570226039551584
+      }
+    },
+    "ScalarizedUCB": {
+      "runtime_s": 0.13185834884643555,
+      "PreferenceRegret": {
+        "cumulative_mean": 1124.8370580847434,
+        "cumulative_std": 0.0,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 519.9301290009313,
+        "cumulative_std": 2.5690421044376643,
+        "final_mean": 1.007379015012745,
+        "final_std": 0.0042528502856765595
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 124.5,
+        "cumulative_std": 18.443607745413225,
+        "final_mean": 0.3333333333333333,
+        "final_std": 0.23570226039551584
+      }
+    },
+    "RandomPlay": {
+      "runtime_s": 0.0821375846862793,
+      "PreferenceRegret": {
+        "cumulative_mean": 1124.8370580847434,
+        "cumulative_std": 0.0,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 124.50000000000004,
+        "cumulative_std": 1.4210854715202004e-14,
+        "final_mean": 0.249,
+        "final_std": 0.0
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 500.0,
+        "cumulative_std": 0.0,
+        "final_mean": 1.0,
+        "final_std": 0.0
+      }
+    }
+  }
+}

@@ -1,7 +1,9 @@
 """Benchmark environments."""
+from paretobandits.envs.fairness import FairnessBandit
+from paretobandits.envs.rlhf import RLHFBandit
 from paretobandits.envs.synthetic import SyntheticShift
 
-__all__ = ["SyntheticShift"]
+__all__ = ["SyntheticShift", "FairnessBandit", "RLHFBandit"]
 
 # Warfarin is an optional import (requires pandas + xls reader).
 try:
