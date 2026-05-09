@@ -36,7 +36,9 @@ from paretobandits.algos.legacy import (
     AnnealingPareto,
     ATCBinning,
     Auer16,
+    Cai24,
     CUSUMRestart,
+    Kone23,
     ParetoUCB,
     SlidingWindowBinning,
     StaticBinning,
@@ -65,6 +67,8 @@ ALGORITHMS: dict[str, Any] = {
     "SlidingWindowBinning": SlidingWindowBinning,
     "CUSUMRestart": CUSUMRestart,
     "ATCBinning": ATCBinning,
+    "Kone23": Kone23,
+    "Cai24": Cai24,
     "ScalarizedUCB": ScalarizedUCB,
     "RandomPlay": RandomPlay,
 }

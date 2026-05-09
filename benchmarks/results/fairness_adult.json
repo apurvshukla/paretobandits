@@ -24,7 +24,7 @@
   "n_objectives": 2,
   "algorithms": {
     "PCBShift": {
-      "runtime_s": 1.2995309829711914,
+      "runtime_s": 1.0015888214111328,
       "PreferenceRegret": {
         "cumulative_mean": 648.5115959917078,
         "cumulative_std": 132.90869710813558,
@@ -45,7 +45,7 @@
       }
     },
     "Auer16": {
-      "runtime_s": 0.33306360244750977,
+      "runtime_s": 0.31385087966918945,
       "PreferenceRegret": {
         "cumulative_mean": 608.6959350092797,
         "cumulative_std": 199.68050201736932,
@@ -65,8 +65,92 @@
         "final_std": 0.0
       }
     },
+    "ParetoUCB": {
+      "runtime_s": 0.2220320701599121,
+      "PreferenceRegret": {
+        "cumulative_mean": 719.244560499105,
+        "cumulative_std": 8.402817696855918,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 487.23888951607523,
+        "cumulative_std": 8.285500805466672,
+        "final_mean": 1.0047937780122744,
+        "final_std": 0.0
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 357.3333333333333,
+        "cumulative_std": 8.98455464796237,
+        "final_mean": 0.6666666666666666,
+        "final_std": 0.4714045207910317
+      }
+    },
+    "AnnealingPareto": {
+      "runtime_s": 0.24439740180969238,
+      "PreferenceRegret": {
+        "cumulative_mean": 749.8913720564956,
+        "cumulative_std": 0.0,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 246.69256529871086,
+        "cumulative_std": 29.63366050813267,
+        "final_mean": 0.39510600988362826,
+        "final_std": 0.023558953812846853
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 111.08333333333333,
+        "cumulative_std": 34.603307484818394,
+        "final_mean": 0.25,
+        "final_std": 0.0
+      }
+    },
+    "Kone23": {
+      "runtime_s": 0.313917875289917,
+      "PreferenceRegret": {
+        "cumulative_mean": 749.8913720564956,
+        "cumulative_std": 0.0,
+        "final_mean": 2.9995654882259823,
+        "final_std": 0.0
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 324.03958978775734,
+        "cumulative_std": 203.65109326116487,
+        "final_mean": 0.7538518524730599,
+        "final_std": 0.4960992815412686
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 260.0,
+        "cumulative_std": 112.19064462218202,
+        "final_mean": 0.5555555555555555,
+        "final_std": 0.41573970964154905
+      }
+    },
+    "Cai24": {
+      "runtime_s": 0.8533115386962891,
+      "PreferenceRegret": {
+        "cumulative_mean": 613.4318746948543,
+        "cumulative_std": 192.98287188344864,
+        "final_mean": 2.440305253137289,
+        "final_std": 0.790913409358396
+      },
+      "HausdorffRegret": {
+        "cumulative_mean": 487.55280284043437,
+        "cumulative_std": 9.338127339576065,
+        "final_mean": 0.9824603174603176,
+        "final_std": 0.021976429802591454
+      },
+      "DominanceCoverage": {
+        "cumulative_mean": 275.6666666666667,
+        "cumulative_std": 41.122445884888165,
+        "final_mean": 0.6666666666666666,
+        "final_std": 0.23570226039551584
+      }
+    },
     "ScalarizedUCB": {
-      "runtime_s": 0.11366820335388184,
+      "runtime_s": 0.11113119125366211,
       "PreferenceRegret": {
         "cumulative_mean": 235.96581840711062,
         "cumulative_std": 215.98723019496856,
@@ -87,7 +171,7 @@
       }
     },
     "RandomPlay": {
-      "runtime_s": 0.08315062522888184,
+      "runtime_s": 0.07974553108215332,
       "PreferenceRegret": {
         "cumulative_mean": 749.8913720564956,
         "cumulative_std": 0.0,

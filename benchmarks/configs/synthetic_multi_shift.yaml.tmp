@@ -1,12 +1,13 @@
-# Single distribution shift halfway through the run.
-# This is the canonical setup for Theorem 1 of Shukla & Kumar (2024).
-# Pre-shift: contexts skew low. Post-shift: contexts skew high.
+# Multiple change points — Theorem 3.
+# Three shifts evenly spaced; the context distribution alternates between
+# two regimes. Tests robustness to repeated regime changes (e.g. seasonal
+# patterns, A/B test phases, multi-cohort clinical trials).
 
-name: synthetic_single_shift
+name: synthetic_multi_shift
 description: |
-  Canonical single-shift setup. One change point at T/2; pre-shift contexts
-  follow Beta(1, nu+1), post-shift Beta(nu+1, 1). Tests adaptation under
-  abrupt distribution change.
+  Three change points alternating between two distributions. This is the
+  setup for Theorem 3 (multiple shifts). Algorithms that don't adapt
+  online should accumulate regret at every shift.
 horizon: 10000
 n_seeds: 20
 delta: 0.05
@@ -19,10 +20,11 @@ environment:
   beta: 1.0
   lipschitz_L: 4.0
   sigma: 0.1
-  schedule: single
-  shift_times: [5000]
+  schedule: multi
+  shift_times: [2500, 5000, 7500]
   nu: 5.0
 
+algorithms:
 algorithms:
   - PCBShift
   - SukKpotufe20

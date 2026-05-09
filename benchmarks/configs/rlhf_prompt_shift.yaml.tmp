@@ -28,6 +28,7 @@ environment:
   sigma: 0.05
 
 algorithms:
+algorithms:
   - PCBShift
   - Auer16
   - ParetoUCB

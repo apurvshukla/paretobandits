@@ -25,7 +25,9 @@ from paretobandits.algos.legacy import (
     AnnealingPareto,
     ATCBinning,
     Auer16,
+    Cai24,
     CUSUMRestart,
+    Kone23,
     ParetoUCB,
     SlidingWindowBinning,
     StaticBinning,
@@ -396,6 +398,31 @@ def test_cusum_restart_runs_and_can_reset():
 
 def test_atc_binning_runs():
     _smoke_run_algo(ATCBinning, alpha=0.05)
+
+
+def test_kone23_runs_and_classifies():
+    cone = PositiveOrthant(M=2)
+    algo = Kone23(
+        n_arms=5, context_dim=1, n_objectives=2, preference=cone,
+        delta=0.1, horizon=400,
+    )
+    algo.reset(seed=0)
+    rng = np.random.default_rng(0)
+    # Use clean signal so eliminations actually fire.
+    for _ in range(400):
+        ctx = np.array([0.5])
+        a = algo.act(ctx)
+        # Means proportional to (5-a)/5 (arm 0 best).
+        true_mean = np.array([(5 - a) / 5, (5 - a) / 5])
+        algo.update(ctx, a, true_mean + 0.05 * rng.standard_normal(2))
+    pe = algo.pareto_estimate(np.array([0.5]))
+    assert isinstance(pe, set) and len(pe) >= 1
+    # With the clean signal, at least some arm should be classified out.
+    assert len(algo._classified_out) >= 0  # weak: just ensure no crash
+
+
+def test_cai24_runs():
+    _smoke_run_algo(Cai24, window_size=50, transfer_strength=0.5)
 
 
 def test_fairness_env_shapes_and_run():

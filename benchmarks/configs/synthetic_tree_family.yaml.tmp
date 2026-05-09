@@ -26,6 +26,7 @@ environment:
   nu: 5.0
 
 algorithms:
+algorithms:
   - PCBShift
   - SukKpotufe20
   - Turgay18

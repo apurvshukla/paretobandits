@@ -29,6 +29,14 @@ algorithms:
   - SukKpotufe20
   - Turgay18
   - Auer16
+  - ParetoUCB
+  - AnnealingPareto
+  - StaticBinning
+  - SlidingWindowBinning
+  - CUSUMRestart
+  - ATCBinning
+  - Kone23
+  - Cai24
   - ScalarizedUCB
   - RandomPlay
 

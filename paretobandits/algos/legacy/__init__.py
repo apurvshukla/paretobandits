@@ -19,6 +19,8 @@ Available:
 
 from paretobandits.algos.legacy.annealing_pareto import AnnealingPareto
 from paretobandits.algos.legacy.auer16 import Auer16
+from paretobandits.algos.legacy.cai24 import Cai24
+from paretobandits.algos.legacy.kone23 import Kone23
 from paretobandits.algos.legacy.pareto_ucb import ParetoUCB
 from paretobandits.algos.legacy.static_binning import (
     ATCBinning,
@@ -33,7 +35,9 @@ __all__ = [
     "AnnealingPareto",
     "ATCBinning",
     "Auer16",
+    "Cai24",
     "CUSUMRestart",
+    "Kone23",
     "ParetoUCB",
     "SlidingWindowBinning",
     "StaticBinning",

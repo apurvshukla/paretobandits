@@ -27,6 +27,7 @@ environment:
   nu: 5.0
 
 algorithms:
+algorithms:
   - PCBShift
   - Auer16
   - ParetoUCB

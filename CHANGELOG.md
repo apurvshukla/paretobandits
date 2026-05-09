@@ -4,6 +4,17 @@ All notable changes to **paretobandits** will be documented here. Versions follo
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-05-08
+
+### Added
+- **Two final baselines.** Total now: 14 algorithms (1 hero + 13 baselines).
+  - `Kone23` (Kone, Kaufmann & Richert 2023) — Adaptive Pareto Set Identification. Originally a fixed-confidence ID algorithm, not regret minimization. Adapted to streaming by switching to uniform play after the active set stabilizes. Honest about being out-of-design-regime in the docstring; inclusion is informative because it shows PSI algorithms don't transfer to streaming-with-shift settings.
+  - `Cai24` (Cai, Cai & Li 2024) — Transfer learning for contextual MABs. Originally a LinUCB-with-transfer-prior algorithm assuming a fixed historical "source" dataset. Simplified port: per-arm shrinkage between recent and all-time empirical means, with the all-time estimate playing the "source" role. Linear-context version on the v0.9 roadmap.
+
+### Notes
+- This is "round-trip" coverage of every algorithm cited in Shukla & Kumar 2024 plus all four legacy baselines from the original `script/` code. The benchmark is now feature-complete relative to the paper's literature: 14 algorithms × 11 configs × 5 metrics.
+- Both new baselines are explicitly outside their original design regime when run on shift configs. Their docstrings call this out — and their poor performance on shift configs is itself a benchmark result, not a bug.
+
 ## [0.7.0] — 2026-05-08
 
 ### Added
