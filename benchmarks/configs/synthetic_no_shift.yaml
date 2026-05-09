@@ -1,0 +1,38 @@
+# Stationary baseline — no distribution shift at all.
+# Tests how each algorithm performs in the easy case where the context
+# distribution is fixed throughout. Establishes a "ceiling" for what's
+# achievable; algorithms that handle shift shouldn't be too much worse here.
+
+name: synthetic_no_shift
+description: |
+  Stationary baseline. Single context distribution Beta(1, nu+1) for the
+  entire run. Tests that shift-aware algorithms don't pay too much cost
+  for their machinery when there's no shift to track.
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 1
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: none
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - SukKpotufe20
+  - Turgay18
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

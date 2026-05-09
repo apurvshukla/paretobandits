@@ -44,12 +44,14 @@ dependencies = [
 [project.optional-dependencies]
 warfarin = ["pandas>=1.4", "openpyxl>=3.0", "xlrd>=2.0"]
 viz = ["matplotlib>=3.5"]
+bench = ["pyyaml>=6.0"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.1",
     "build>=1.0",
     "twine>=4.0",
+    "pyyaml>=6.0",
 ]
 all = [
     "pandas>=1.4",
@@ -59,6 +61,7 @@ all = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "ruff>=0.1",
+    "pyyaml>=6.0",
 ]
 
 [project.urls]

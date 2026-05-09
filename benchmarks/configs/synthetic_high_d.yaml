@@ -1,0 +1,39 @@
+# Higher-d context — d=2.
+# v0.3.0 unlocked d > 1 for PCBShift. SukKpotufe20 and Turgay18 still
+# require d=1 in this version, so they're omitted. Tests whether the
+# d-dim partitioning works on a non-trivial higher-dim problem and
+# whether PCBShift still beats Random/Auer16 (which works at any d) and
+# ScalarizedUCB (context-agnostic).
+
+name: synthetic_high_d
+description: |
+  d=2 context with single shift. Verifies the v0.3.0 multi-d feature.
+  SukKpotufe20 and Turgay18 are omitted because their current
+  implementations restrict to context_dim=1.
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 2
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: single
+  shift_times: [1500]
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

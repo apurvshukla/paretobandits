@@ -1,0 +1,39 @@
+# Single distribution shift halfway through the run.
+# This is the canonical setup for Theorem 1 of Shukla & Kumar (2024).
+# Pre-shift: contexts skew low. Post-shift: contexts skew high.
+
+name: synthetic_single_shift
+description: |
+  Canonical single-shift setup. One change point at T/2; pre-shift contexts
+  follow Beta(1, nu+1), post-shift Beta(nu+1, 1). Tests adaptation under
+  abrupt distribution change.
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 1
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: single
+  shift_times: [1500]
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - SukKpotufe20
+  - Turgay18
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall
+  - RecoveryTime

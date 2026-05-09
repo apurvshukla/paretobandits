@@ -1,0 +1,41 @@
+# Gradual distribution drift — context distribution interpolates linearly
+# between source and target over a window. Tests handling of slow
+# concept drift, the common practical case (population shifts month to
+# month rather than overnight).
+
+name: synthetic_gradual
+description: |
+  Gradual drift. The Beta-distribution parameters interpolate linearly
+  between source and target over a window of 1500 steps. There is no
+  sharp change point to detect; the algorithm has to track a moving
+  target. This is harder than abrupt shift in some ways (no clear signal
+  for change-point detectors) and easier in others (no sudden break).
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 1
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: gradual
+  shift_times: [750, 2250]    # interpolate over [t0, t1]
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - SukKpotufe20
+  - Turgay18
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

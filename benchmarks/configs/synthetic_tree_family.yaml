@@ -1,0 +1,40 @@
+# Tree-discretized D(γ, C_γ) family — Theorem 2.
+# Source distribution: Beta(1+γ, 1) (concentrated around 1). Target: uniform.
+# This is the family for which the paper proves a sharper regret bound.
+# Tests whether PCBShift's adaptive-discretization actually exploits this
+# structure relative to baselines that don't.
+
+name: synthetic_tree_family
+description: |
+  Tree-discretized source-target family from Theorem 2. Source is Beta(1+β, 1),
+  target is Uniform([0, 1]). PCBShift's regret bound has an extra γ/β factor
+  here that should produce a wider gap from baselines than the generic case.
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 1
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: tree
+  shift_times: [1500]
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - SukKpotufe20
+  - Turgay18
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall

@@ -1,0 +1,40 @@
+# Multiple change points — Theorem 3.
+# Three shifts evenly spaced; the context distribution alternates between
+# two regimes. Tests robustness to repeated regime changes (e.g. seasonal
+# patterns, A/B test phases, multi-cohort clinical trials).
+
+name: synthetic_multi_shift
+description: |
+  Three change points alternating between two distributions. This is the
+  setup for Theorem 3 (multiple shifts). Algorithms that don't adapt
+  online should accumulate regret at every shift.
+horizon: 3000
+n_seeds: 8
+delta: 0.05
+
+environment:
+  type: SyntheticShift
+  n_arms: 10
+  n_objectives: 2
+  context_dim: 1
+  beta: 1.0
+  lipschitz_L: 4.0
+  sigma: 0.1
+  schedule: multi
+  shift_times: [750, 1500, 2250]
+  nu: 5.0
+
+algorithms:
+  - PCBShift
+  - SukKpotufe20
+  - Turgay18
+  - Auer16
+  - ScalarizedUCB
+  - RandomPlay
+
+metrics:
+  - PreferenceRegret
+  - HausdorffRegret
+  - DominanceCoverage
+  - ParetoPrecisionRecall
+  - RecoveryTime

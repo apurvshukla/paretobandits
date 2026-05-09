@@ -4,6 +4,18 @@ All notable changes to **paretobandits** will be documented here. Versions follo
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-05-08
+
+### Added
+- **Benchmark suite.** Six canonical YAML configs in `benchmarks/configs/`: `synthetic_no_shift`, `synthetic_single_shift`, `synthetic_multi_shift`, `synthetic_gradual`, `synthetic_tree_family`, `synthetic_high_d`. Each pinned to one canonical experimental setup tied to a specific paper claim (Theorem 1, 2, 3, etc).
+- `python -m benchmarks.run --config <path.yaml>` to run a single config; `python -m benchmarks.run --all` to run them all and regenerate `BENCHMARK.md`.
+- `BENCHMARK.md` — auto-generated leaderboard at the repo root. Currently populated with sandbox-indicative numbers; clearly labeled as needing a publication-grade rerun (T≥10000, n_seeds≥20).
+- Per-config detail tables in `benchmarks/results/<config>.md` and machine-readable JSON in `benchmarks/results/<config>.json`.
+- `[bench]` optional dependency (`pip install paretobandits[bench]`) — adds PyYAML for config loading.
+
+### Changed
+- The "is this benchmark-level?" answer becomes "yes for the infrastructure; the numbers will be once you run at full scale."
+
 ## [0.3.0] — 2026-05-08
 
 ### Added
